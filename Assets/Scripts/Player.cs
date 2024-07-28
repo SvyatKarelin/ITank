@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Transform CameraTransform;
-    public Transform CameraAnchor;
-    public float MouseSensetivity = 5;
-    public float CameraRange = 10;
-    public float MaxSpeed = 10;
-    public float RotationSpeed = 1;
-    public float Acceleration = 35;
-    public float Deceleration = 35;
+    [SerializeField] private Cannon TankCannon;
+    [SerializeField] private Transform CameraTransform;
+    [SerializeField] private Transform CameraAnchor;
+    [SerializeField] private float MouseSensetivity = 5;
+    [SerializeField] private float CameraRange = 10;
+    [SerializeField] private float MaxSpeed = 10;
+    [SerializeField] private float RotationSpeed = 1;
+    [SerializeField] private float Acceleration = 35;
+    [SerializeField] private float Deceleration = 35;
     private Rigidbody Rigitbody;
     private Vector2 Rot;
     void Start()
@@ -22,6 +24,14 @@ public class Player : MonoBehaviour
 
     Vector3 CalcCameraPos(Vector3 RadRot, float Range) => 
         CameraAnchor.position + new Vector3(Mathf.Cos(RadRot.x) * Range * Mathf.Cos(RadRot.y), Range * Mathf.Sin(RadRot.y), Mathf.Sin(RadRot.x) * Range * Mathf.Cos(RadRot.y));
+    Vector3 GetShootPos()
+    {
+        Ray ray = CameraTransform.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit)) return hit.point;
+        return ray.GetPoint(CameraRange);
+    }
+
     void Update()
     {
         Rot += new Vector2(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y")) * MouseSensetivity;
@@ -45,5 +55,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(CameraAnchor.position, CameraNewPos - CameraAnchor.position, out hit, CameraRange + 2)) CameraNewPos = CalcCameraPos(RadRot, hit.distance - 2);
         CameraTransform.position = CameraNewPos;
         CameraTransform.LookAt(CameraAnchor.position);
+
+        TankCannon.LookAt(GetShootPos());
     }
 }
