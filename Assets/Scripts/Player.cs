@@ -15,11 +15,16 @@ public class Player : MonoBehaviour
     [SerializeField] private float RotationSpeed = 1;
     [SerializeField] private float Acceleration = 35;
     [SerializeField] private float Deceleration = 35;
+    [SerializeField] private AudioClip Idle;
+    [SerializeField] private AudioClip Driving;
+    private AudioSource audioSourse;
     private Rigidbody Rigitbody;
     private Vector2 Rot;
     void Start()
     {
-        Rigitbody = GetComponent<Rigidbody>();
+        Rigitbody = Utilits.CheckComponent<Rigidbody>(transform);
+        audioSourse = Utilits.CheckComponent<AudioSource>(transform);
+        audioSourse.loop = true;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -43,7 +48,12 @@ public class Player : MonoBehaviour
             Rigitbody.velocity += new Vector3(transform.forward.x * ForwardAcc, 0f, transform.forward.z * ForwardAcc); 
         }
         //Braking
-        if (Input.GetAxis("Vertical") == 0 && Rigitbody.velocity.magnitude >= 1) Rigitbody.velocity += transform.forward * (Deceleration * Time.deltaTime * Vector3.Dot(transform.forward, Rigitbody.velocity) < 0 ? 1 : -1);
+        if (Input.GetAxis("Vertical") == 0) {
+            Utilits.SetClip(audioSourse ,Idle, 0.1f);
+            if (Rigitbody.velocity.magnitude >= 1) Rigitbody.velocity += transform.forward * (Deceleration * Time.deltaTime * Vector3.Dot(transform.forward, Rigitbody.velocity) < 0 ? 1 : -1);
+        } else {
+            Utilits.SetClip(audioSourse, Driving, 0.4f);
+        }
 
         Vector3 AngVel = Rigitbody.angularVelocity;
         AngVel.y = Input.GetAxis("Horizontal") * RotationSpeed;

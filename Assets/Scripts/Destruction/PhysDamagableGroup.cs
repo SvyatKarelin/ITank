@@ -15,7 +15,7 @@ public class PhysDamagableGroup : PhysDestruction
         HealthPoints -= Damage;
         if (HealthPoints <= 0)
         {
-            PhysDestroy(gameObject, transform.parent);
+            PhysDestroy(transform, transform.parent);
             TakeDamageCallbacks = null;
             foreach (var Member in GroubMembers) Member.TakeDamageCallbacks -= TakeDamageCallback;
         }

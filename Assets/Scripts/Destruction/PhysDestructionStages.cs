@@ -22,7 +22,7 @@ public class PhysDestructionStages : PhysDestruction
     {
         if (GetStage(HealthPoints) < GetStage(HealthPoints -= Damage)) 
             foreach (Transform Tr in DestructionStages[GetStage(HealthPoints) - 1].DestructOnStage)
-                PhysDestroy(Tr.gameObject);
+                PhysDestroy(Tr);
         print(GetStage(HealthPoints));
     }
 
