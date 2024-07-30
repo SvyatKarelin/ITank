@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private Transform SUS;
     [SerializeField] private Cannon TankCannon;
     [SerializeField] private Transform CameraTransform;
     [SerializeField] private Transform CameraAnchor;
@@ -29,7 +30,7 @@ public class Player : MonoBehaviour
         Ray ray = CameraTransform.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit)) return hit.point;
-        return ray.GetPoint(CameraRange);
+        else return ray.origin + ray.direction*100;
     }
 
     void Update()
@@ -56,6 +57,8 @@ public class Player : MonoBehaviour
         CameraTransform.position = CameraNewPos;
         CameraTransform.LookAt(CameraAnchor.position);
 
+        SUS.position = GetShootPos();
         TankCannon.LookAt(GetShootPos());
+        if (Input.GetMouseButtonDown(0)) TankCannon.Shoot();
     }
 }
