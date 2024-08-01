@@ -58,9 +58,11 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.8f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DrawRendererBounds.cs" />
     <Compile Include="Assets\Scripts\interfaces\IDamageable.cs" />
     <Compile Include="Assets\Scripts\Destruction\PhysDamagableGroup.cs" />
     <Compile Include="Assets\Scripts\AutoEffect.cs" />
+    <Compile Include="Assets\Scripts\abstract\Enemy.cs" />
     <Compile Include="Assets\Scripts\Tank\Shell.cs" />
     <Compile Include="Assets\Scripts\abstract\DestructionObjects.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
