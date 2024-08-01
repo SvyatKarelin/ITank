@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 interface ICTarget {
     public Vector3 GetPos();
@@ -25,15 +26,18 @@ public class Cannon : MonoBehaviour
 {
     [SerializeField] private GameObject ShellPref;
     [SerializeField] private Transform CannonTransform;
+    [SerializeField] private float RotationSpeed = 45;
+    [SerializeField] private float CannonStrength = 400;
+    public bool IsReloading { get; private set; }
+    public bool IsAimed { get; private set; }
     private ICTarget CannonTarget;
-    private bool IsReloading;
     public void Shoot()
     {
         if (!IsReloading)
         {
             GameObject Shell = Instantiate(ShellPref, CannonTransform.position, CannonTransform.rotation);
             Shell.GetComponent<Shell>().Ignore.Add(gameObject);
-            Shell.GetComponent<Rigidbody>().AddForce(CannonTransform.forward * 400);
+            Shell.GetComponent<Rigidbody>().AddForce(CannonTransform.forward * CannonStrength);
             StartCoroutine(Reload());
         }
     }
@@ -41,7 +45,7 @@ public class Cannon : MonoBehaviour
     Vector3 Aim(Transform ObjTransform, Vector3 Target)
     {
         Quaternion TargetRotation = Quaternion.LookRotation(Target - ObjTransform.position);
-        Vector3 CurentRotation = Quaternion.RotateTowards(ObjTransform.rotation, TargetRotation, 45 * Time.deltaTime).eulerAngles;
+        Vector3 CurentRotation = Quaternion.RotateTowards(ObjTransform.rotation, TargetRotation, RotationSpeed * Time.deltaTime).eulerAngles;
         return CurentRotation;
     }
 
@@ -61,6 +65,8 @@ public class Cannon : MonoBehaviour
             Vector3 CannonAim = Aim(CannonTransform, CannonTarget.GetPos()), TurretAim = Aim(transform, CannonTarget.GetPos());
             transform.eulerAngles = new Vector3(0f, TurretAim.y , 0f);
             CannonTransform.eulerAngles = new Vector3(CannonAim.x, CannonAim.y, 0f);
+            if (Utilits.CompareWithError(CannonTransform.eulerAngles, Quaternion.LookRotation(CannonTarget.GetPos() - CannonTransform.position).eulerAngles, 2f)) IsAimed = true; 
+            else IsAimed = false;
         }
     }
 }

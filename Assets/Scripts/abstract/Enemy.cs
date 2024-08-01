@@ -6,6 +6,13 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Cannon cannon;
+    protected NavMeshAgent agent;
+
+    public void Start()
+    {
+        agent = Utilits.CheckComponent<NavMeshAgent>(transform);
+    }
     Transform GetTarget()
     {
         return GameObject.FindGameObjectWithTag("Player").transform;
@@ -42,8 +49,9 @@ public class Enemy : MonoBehaviour
     {
         Vector3 Pos1Offset = Obj1.position + Offset;
         Vector3 Pos2Offset = Obj2.position + Offset;
-        RaycastHit[] Result = Physics.RaycastAll(Obj1.position, Obj2.position - Obj1.position, Vector3.Distance(Obj1.position, Obj2.position))
-        .Where(Hit => (Hit.transform.parent != Obj1.transform) && (Hit.transform != Obj1.transform) && (Hit.transform != Obj2)).ToArray();
+        Debug.DrawLine(Pos1Offset,Pos2Offset);
+        RaycastHit[] Result = Physics.RaycastAll(Pos1Offset, Pos2Offset - Pos1Offset, Vector3.Distance(Pos1Offset, Pos2Offset))
+        .Where(Hit => (Hit.transform.parent != Obj1) && (Hit.transform.parent != Obj2) && (Hit.transform != Obj1) && (Hit.transform != Obj2)).ToArray();
         return Result;
     }
 
@@ -51,7 +59,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 Pos1Offset = Obj1.position + Offset;
         Vector3 Pos2Offset = Obj2 + Offset;
-        RaycastHit[] Result = Physics.RaycastAll(Obj1.position, Obj2 - Obj1.position, Vector3.Distance(Obj1.position, Obj2))
+        RaycastHit[] Result = Physics.RaycastAll(Pos1Offset, Pos2Offset - Pos1Offset, Vector3.Distance(Pos1Offset, Pos2Offset))
         .Where(Hit => (Hit.transform.parent != Obj1.transform) && (Hit.transform != Obj1.transform)).ToArray();
         return Result;
     }
@@ -83,22 +91,22 @@ public class Enemy : MonoBehaviour
         if (!Shelter) return false;
         Dictionary<Vector2, Vector3> ShPoints = GetShelterPoints(Shelter);
 
-        Dictionary<Vector2, bool> Raycasts = ShPoints.Select(Point => new { Key = Point.Key, Value = RaycastBetweenObj(GetTarget(), Point.Value, new Vector3(0f, 3f, 0f)).Length <= 0 })
+        Dictionary<Vector2, bool> Raycasts = ShPoints.Select(Point => new { Key = Point.Key, Value = RaycastBetweenObj(GetTarget(), Point.Value, new Vector3(0f, 2f, 0f)).Length <= 0 })
             .ToDictionary(Pair => Pair.Key, Pair => Pair.Value);
 
 
         foreach (var Center in Raycasts.Where(Pair => Pair.Key.x == 0 || Pair.Key.y == 0))
         {
-            print(Center.Key);
             if (!Center.Value) {
+                print(Center.Key);
                 //проверяем центры на безопасность от игрока
                 SafePos = ShPoints[Center.Key];
                 for (int Point = -1; Point <= 1; Point++)
                 {
                     if (Point == 0) continue;
                     //проверяем края на возможность отаки по игроку
-                    if (Center.Key.x == 0 && Raycasts[new Vector2(Point, Center.Key.y)]) { ShootPos = new Vector2(Point, Center.Key.y); return true; }
-                    if (Center.Key.y == 0 && Raycasts[new Vector2(Center.Key.x, Point)]) { ShootPos = new Vector2(Center.Key.x, Point); return true; }
+                    if (Center.Key.x == 0 && Raycasts[new Vector2(Point, Center.Key.y)]) { ShootPos = ShPoints[new Vector2(Point, Center.Key.y)]; return true; }
+                    if (Center.Key.y == 0 && Raycasts[new Vector2(Center.Key.x, Point)]) { ShootPos = ShPoints[new Vector2(Center.Key.x, Point)]; return true; }
                 }
             }
         }
@@ -107,10 +115,16 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        print(GetShelterPos(200, out Vector3 SafePos, out Vector3 ShootPos));
-
-        if (RaycastBetweenObj(transform, GetTarget(), new Vector3(0f, 3f, 0f)).Length > 0) {
-            GetComponent<NavMeshAgent>().SetDestination(SafePos);
+        //if (RaycastBetweenObj(transform, GetTarget(), new Vector3(0f, 3f, 0f)).Length > 0) {
+        if(GetShelterPos(200, out Vector3 SafePos, out Vector3 ShootPos)) {
+            if (cannon.IsReloading) agent.SetDestination(SafePos);
+            else { 
+                agent.SetDestination(ShootPos);
+            }
         }
+        else agent.SetDestination(GetTarget().position + (transform.position-GetTarget().position).normalized * 10);
+
+        cannon.LookAt(GetTarget());
+        if (RaycastBetweenObj(transform, GetTarget(), new Vector3(0f, 2f, 0f)).Length <= 0 && cannon.IsAimed) cannon.Shoot();
     }
 }

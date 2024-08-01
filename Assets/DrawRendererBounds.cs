@@ -11,9 +11,6 @@ public class DrawRendererBounds : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(BoundingBox.center, BoundingBox.extents * 2);
 
-        List<Vector3> Sides = new List<Vector3>();
-        List<Vector3> Edges = new List<Vector3>();
-
         Vector3 DoOffset( Vector3 Center, Vector3 Dot, float Offset) 
             => Dot + Vector3.Normalize(Dot - Center) * Offset;
 
@@ -24,8 +21,6 @@ public class DrawRendererBounds : MonoBehaviour
         //(1,-1) (0,-1) (-1,-1)
 
         //BoundingBox.extents - вектор указывающий на точку (1, 1) (является длинной единичного вектора(единичным отрезкои отдельновзятых осей)), умнажая его x и y компоненты на 1,0,-1 можно получить все точки в локальных координатах относительно центра BoundingBox
-
-        Dictionary<Vector2, Vector3> Raycasts;
 
         for (int y = -1; y <= 1; y++)
             for (int x = -1; x <= 1; x++)

@@ -42,4 +42,6 @@ public static class Utilits
         }
         return new Bounds(SelfBB.center, extents * 2);
     }
+
+    public static bool CompareWithError(Vector3 Vec1, Vector3 Vec2, float Error) => (Vec1-Vec2).magnitude < Error;
 }
