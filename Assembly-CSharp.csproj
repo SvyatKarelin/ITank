@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Destruction\PhysDestruction.cs" />
     <Compile Include="Assets\Scripts\Tank\Cannon.cs" />
     <Compile Include="Assets\Scripts\Destruction\Explosives.cs" />
+    <Compile Include="Assets\Scripts\Destruction\DestructableVehicle.cs" />
     <Compile Include="Assets\Scripts\Destruction\PhysDestructionStages.cs" />
     <Compile Include="Assets\Scripts\Utilits.cs" />
   </ItemGroup>

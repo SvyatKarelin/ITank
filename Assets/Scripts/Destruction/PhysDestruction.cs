@@ -6,11 +6,6 @@ public class PhysDestruction : DestructionObjects
 {
     [SerializeField] float ExplosionStenght = 100;
     [SerializeField] float ExplosionRadius = 100;
-    public override void TakeDamage(int Damage)
-    {
-        HealthPoints -= Damage;
-        if (HealthPoints <= 0) PhysDestroy(transform, transform.parent);
-    }
 
     Rigidbody MakePhysical(Transform Obj)
     {
@@ -28,5 +23,10 @@ public class PhysDestruction : DestructionObjects
     {
         Rigidbody rb = MakePhysical(Obj);
         rb.AddExplosionForce(ExplosionStenght, transform.position, ExplosionRadius, ExplosionStenght/2); //Obj.transform.position - transform.position) * ExplosionStenght;
+    }
+
+    public override void Destroy()
+    {
+        PhysDestroy(transform);
     }
 }

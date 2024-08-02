@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : DestructableVehicle
 {
     [SerializeField] private Transform SUS;
     [SerializeField] private Cannon TankCannon;
@@ -20,8 +20,9 @@ public class Player : MonoBehaviour
     private AudioSource audioSourse;
     private Rigidbody Rigitbody;
     private Vector2 Rot;
-    void Start()
+    public override void Start()
     {
+        HealthPoints = StartHealth;
         Rigitbody = Utilits.CheckComponent<Rigidbody>(transform);
         audioSourse = Utilits.CheckComponent<AudioSource>(transform);
         audioSourse.loop = true;

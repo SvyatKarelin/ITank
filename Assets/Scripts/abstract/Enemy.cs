@@ -4,13 +4,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : DestructableVehicle
 {
     [SerializeField] private Cannon cannon;
     protected NavMeshAgent agent;
 
-    public void Start()
+    public override void Start()
     {
+        HealthPoints = StartHealth;
         agent = Utilits.CheckComponent<NavMeshAgent>(transform);
     }
     Transform GetTarget()

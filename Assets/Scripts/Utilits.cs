@@ -44,4 +44,16 @@ public static class Utilits
     }
 
     public static bool CompareWithError(Vector3 Vec1, Vector3 Vec2, float Error) => (Vec1-Vec2).magnitude < Error;
+
+    public static List<Transform> GetObjectsInHierarchy(Transform Parent)
+    {
+        List <Transform> Result = new List <Transform>();
+        for (int ChildInd = 0; ChildInd < Parent.childCount; ChildInd++)
+        {
+            Transform Child = Parent.GetChild(ChildInd);
+            if (Child.childCount > 0) Result.AddRange(GetObjectsInHierarchy(Child));
+            Result.Add(Child);
+        }
+        return Result;
+    }
 }
