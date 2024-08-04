@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public static class Utilits
 {
@@ -56,4 +58,6 @@ public static class Utilits
         }
         return Result;
     }
+
+    public static Vector3 GetVelocity(Transform Obj) => CheckComponent<VelocityCalculator>(Obj).Velocity;
 }

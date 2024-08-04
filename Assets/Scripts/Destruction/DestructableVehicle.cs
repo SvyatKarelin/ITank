@@ -11,6 +11,7 @@ public class DestructableVehicle : PhysDestruction
         if (VehiclePart.GetComponent<Renderer>()) VehiclePart.GetComponent<Renderer>().material.color = new Color(0.215f, 0.215f, 0.215f, 1f);
         foreach (Behaviour C in VehiclePart.GetComponents<Behaviour>()) C.enabled = false;
         PhysDestroy(VehiclePart);
+        Destroy(VehiclePart.gameObject, 20);
     }
     public void VehicleDestroy(Transform Vehicle)
     {

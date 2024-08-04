@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Player : DestructableVehicle
 {
-    [SerializeField] private Transform SUS;
     [SerializeField] private Cannon TankCannon;
     [SerializeField] private Transform CameraTransform;
     [SerializeField] private Transform CameraAnchor;
@@ -68,7 +67,6 @@ public class Player : DestructableVehicle
         CameraTransform.position = CameraNewPos;
         CameraTransform.LookAt(CameraAnchor.position);
 
-        SUS.position = GetShootPos();
         TankCannon.LookAt(GetShootPos());
         if (Input.GetMouseButtonDown(0)) TankCannon.Shoot();
     }

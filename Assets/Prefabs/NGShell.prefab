@@ -97,7 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EffectPrefab: {fileID: 0}
-  IDamageable: 3254
+  Damage: 50
+  SplashRadius: 1
+  SplashDamage: 10
   Ignore: []
 --- !u!1 &1760429176950168822
 GameObject:
@@ -126,7 +128,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760429176950168822}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.005582722, y: -0.89929104, z: -0.011484222, w: -0.43716428}
   m_LocalPosition: {x: 1689.9968, y: 445.63, z: 2340.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -195,5 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EffectPrefab: {fileID: 6242919093461044956, guid: c327444c5d5402641a6f859164978e78, type: 3}
-  IDamageable: 100
+  Damage: 50
+  SplashRadius: 1
+  SplashDamage: 10
   Ignore: []

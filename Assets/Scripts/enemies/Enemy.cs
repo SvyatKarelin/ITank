@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Enemy : DestructableVehicle
 {
-    [SerializeField] private Cannon cannon;
+    [SerializeField] protected Cannon cannon;
     protected NavMeshAgent agent;
 
     public override void Start()
@@ -14,7 +14,7 @@ public class Enemy : DestructableVehicle
         HealthPoints = StartHealth;
         agent = Utilits.CheckComponent<NavMeshAgent>(transform);
     }
-    Transform GetTarget()
+    protected Transform GetTarget()
     {
         return GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -46,7 +46,7 @@ public class Enemy : DestructableVehicle
         return Points;
     }
 
-    RaycastHit[] RaycastBetweenObj(Transform Obj1, Transform Obj2, Vector3 Offset)
+    protected RaycastHit[] RaycastBetweenObj(Transform Obj1, Transform Obj2, Vector3 Offset)
     {
         Vector3 Pos1Offset = Obj1.position + Offset;
         Vector3 Pos2Offset = Obj2.position + Offset;
@@ -56,7 +56,7 @@ public class Enemy : DestructableVehicle
         return Result;
     }
 
-    RaycastHit[] RaycastBetweenObj(Transform Obj1, Vector3 Obj2, Vector3 Offset)
+    protected RaycastHit[] RaycastBetweenObj(Transform Obj1, Vector3 Obj2, Vector3 Offset)
     {
         Vector3 Pos1Offset = Obj1.position + Offset;
         Vector3 Pos2Offset = Obj2 + Offset;
@@ -67,12 +67,12 @@ public class Enemy : DestructableVehicle
     RaycastHit[] RaycastBetweenObj(Transform Obj1, Transform Obj2) => Physics.RaycastAll(Obj1.position, Obj2.position - Obj1.position, Vector3.Distance(Obj1.position, Obj2.position))
         .Where(Hit => (Hit.transform.parent != Obj1.transform) && (Hit.transform != Obj1.transform) && (Hit.transform != Obj2)).ToArray();
 
+    protected Collider[] GetAllShelters(float Radius) => Physics.OverlapSphere(transform.position, Radius).Where(Obj => Obj.tag == "Shelter").ToArray();
 
-    Transform FindShelter(float Radius)//, out Vector3 SafePos, out Vector3 ShootPos)
+    protected virtual Transform FindShelter(float Radius)//, out Vector3 SafePos, out Vector3 ShootPos)
     {
         List<Transform> AvailableShelters = new List<Transform>();
-        Collider[] Objects = Physics.OverlapSphere(transform.position, Radius).Where(Obj => Obj.tag == "Shelter").ToArray();
-        foreach (Collider obj in Objects) {
+        foreach (Collider obj in GetAllShelters(Radius)) {
             RaycastHit[] hits;
             //проверяем наличие преград до цели
             hits = RaycastBetweenObj(GetTarget(), obj.transform, new Vector3(0f, 3f, 0f));
@@ -80,10 +80,11 @@ public class Enemy : DestructableVehicle
             if (hits.Length <= 0) AvailableShelters.Add(obj.transform);
         }
         //Сортируем по расстоянию до нас
+        if(AvailableShelters.Count <= 0) return null;
         return AvailableShelters.OrderBy(Shelter => Vector3.Distance(Shelter.position , transform.position)).ToArray()[0];
     }
 
-    bool GetShelterPos(float Radius, out Vector3 SafePos, out Vector3 ShootPos)
+    protected bool GetShelterPos(float Radius, out Vector3 SafePos, out Vector3 ShootPos)
     {
         SafePos = Vector3.zero;
         ShootPos = Vector3.zero;

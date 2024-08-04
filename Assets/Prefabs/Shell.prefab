@@ -97,7 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EffectPrefab: {fileID: 0}
-  IDamageable: 3254
+  Damage: 50
+  SplashRadius: 1
+  SplashDamage: 10
   Ignore: []
 --- !u!1 &1760429176950168822
 GameObject:
@@ -195,5 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EffectPrefab: {fileID: 6242919093461044956, guid: c327444c5d5402641a6f859164978e78, type: 3}
-  IDamageable: 100
+  Damage: 100
+  SplashRadius: 1
+  SplashDamage: 10
   Ignore: []
