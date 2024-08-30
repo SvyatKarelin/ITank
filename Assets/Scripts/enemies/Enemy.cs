@@ -100,7 +100,7 @@ public class Enemy : DestructableVehicle
         foreach (var Center in Raycasts.Where(Pair => Pair.Key.x == 0 || Pair.Key.y == 0))
         {
             if (!Center.Value) {
-                print(Center.Key);
+                //print(Center.Key);
                 //проверяем центры на безопасность от игрока
                 SafePos = ShPoints[Center.Key];
                 for (int Point = -1; Point <= 1; Point++)

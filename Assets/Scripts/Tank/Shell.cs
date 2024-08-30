@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static UnityEngine.GraphicsBuffer;
 
 public class Shell : MonoBehaviour
 {
@@ -10,10 +11,17 @@ public class Shell : MonoBehaviour
     [SerializeField] private int SplashRadius = 1;
     [SerializeField] private int SplashDamage = 10;
     public List<GameObject> Ignore;
+    private Rigidbody _rigitBody;
 
     void Start()
     {
         Destroy(gameObject,20);
+        _rigitBody = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        transform.rotation = Quaternion.LookRotation(_rigitBody.velocity);
     }
 
     void OnCollisionEnter(Collision collision)

@@ -6,42 +6,47 @@ using static UnityEngine.GraphicsBuffer;
 
 public class ArtilleryCannon : Cannon
 {
+    [SerializeField] private float VerticalAngle;
+
     protected override void ShootShell(GameObject Shell)
     {
         CannonAudioSource.Play();
         Shell = Instantiate(ShellPref, CannonTransform.position, CannonTransform.rotation);
+        CalculateBallistics(CannonTarget.GetPos(),out float Vel ,out Vector2 Ang);
 
         Shell.GetComponent<Shell>().Ignore.Add(gameObject);
-        Shell.GetComponent<Rigidbody>().velocity = CannonTransform.forward * CannonStrength;
+        Shell.GetComponent<Rigidbody>().velocity = CannonTransform.forward * Vel;
     }
 
-    Vector2 CalculateAngles( Vector3 Target )
+    void CalculateBallistics( Vector3 Target, out float Vel, out Vector2 Angles)
     {
-        float HorizontalAng = Quaternion.LookRotation(Target - transform.position).eulerAngles.y;
-        float Distance = Vector3.Distance(CannonTransform.position, Target);
-        float YProjection = Mathf.Sqrt(Mathf.Sqrt(Mathf.Pow(Distance, 4) * (Mathf.Pow(CannonStrength, 4) - Mathf.Pow(9.81f, 2) * Mathf.Pow(Distance, 2))) / Mathf.Pow(Distance, 2) + Mathf.Pow(CannonStrength, 2)) / Mathf.Sqrt(2);
-        float VerticalAng = Mathf.Asin(YProjection / CannonStrength) * Mathf.Rad2Deg;
-        return new Vector2(VerticalAng, HorizontalAng);
+        Angles = new Vector2(45, Quaternion.LookRotation(Target - transform.position).eulerAngles.y);
+        float Distance = Vector3.Distance(CannonTransform.position, new Vector3(Target.x, CannonTransform.position.y , Target.z));
+        float HeightDelta = Target.y - CannonTransform.position.y;
+        Vel = Mathf.Sqrt((-Physics.gravity.y*Mathf.Pow(Distance, 2)) / (Mathf.Cos(Angles.x*Mathf.Deg2Rad)*Mathf.Cos(Angles.x * Mathf.Deg2Rad)*Distance - Mathf.Pow(Mathf.Cos(Angles.x * Mathf.Deg2Rad), 2)*HeightDelta))/ Mathf.Sqrt(2);
+        print(Vel);
     }
 
     private new void Update()
     {
         if (CannonTarget is not null)
         {
-            Vector2 Angles;
-            Vector3 PrevPos = CannonTarget.GetPos(), Proactive = CannonTarget.GetPos();
+            //Vector2 Angles;
+            //Vector3 PrevPos = CannonTarget.GetPos(), Proactive = CannonTarget.GetPos();
 
-            //do
-            //{
-                //PrevPos = Proactive;
-            Angles = CalculateAngles(PrevPos);
-                //Proactive = PrevPos + Utilits.GetVelocity(CannonTarget.GetTargetTransform()) * (2*CannonStrength*Mathf.Sin(Angles.x))/9.81f;
-                //print(Utilits.GetVelocity(CannonTarget.GetTargetTransform()));
-            //} while ((Proactive - PrevPos).magnitude > 100);
+            /*do
+            {
+                PrevPos = Proactive;
+                Angles = CalculateAngles(PrevPos);
+                Proactive = PrevPos + Utilits.GetVelocity(CannonTarget.GetTargetTransform()) * (2*CannonStrength*Mathf.Sin(Angles.x))/9.81f;
+                print(Utilits.GetVelocity(CannonTarget.GetTargetTransform()));
+            } while ((Proactive - PrevPos).magnitude > 100);*/
 
+            CalculateBallistics(CannonTarget.GetPos(), out float Vel, out Vector2 Ang);
             Quaternion CannonRotation = new Quaternion();
-            CannonRotation.eulerAngles = new Vector3(-Angles.x, Angles.y, 0f);
+            CannonRotation.eulerAngles = new Vector3(-Ang.x, Ang.y, 0f);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, CannonRotation, RotationSpeed * Time.deltaTime);
+            print(Vel);
 
             if (Utilits.CompareWithError(transform.rotation.eulerAngles, CannonRotation.eulerAngles, 2f)) IsAimed = true;
             else IsAimed = false;
