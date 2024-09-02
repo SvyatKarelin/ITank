@@ -38,6 +38,7 @@ public class Cannon : MonoBehaviour
     [SerializeField] private AudioClip ShootSound;
     [SerializeField] protected GameObject ShellPref;
     [SerializeField] protected Transform CannonTransform;
+    [SerializeField] protected float ReloadingTime = 2;
     [SerializeField] protected float RotationSpeed = 45;
     [SerializeField] protected float CannonStrength = 400;
     public bool IsReloading { get; protected set; }
@@ -58,7 +59,7 @@ public class Cannon : MonoBehaviour
         if (!IsReloading)
         {
             ShootShell(ShellPref);
-            StartCoroutine(Reload(2f));
+            StartCoroutine(Reload(ReloadingTime));
         }
     }
 

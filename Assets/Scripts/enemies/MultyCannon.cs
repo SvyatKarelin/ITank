@@ -25,7 +25,7 @@ public class MultyCannon : Cannon
         ReloadingQueue.Enqueue(cannon);
         yield return new WaitUntil(() => ReloadingQueue.Peek() == cannon);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(ReloadingTime);
         cannon.IsReloaded = true;
         ReloadingQueue.Dequeue();
     }

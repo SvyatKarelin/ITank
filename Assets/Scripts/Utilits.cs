@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -57,6 +58,22 @@ public static class Utilits
             Result.Add(Child);
         }
         return Result;
+    }
+
+    private static List<Transform> GetChildsWithTag(Transform Obj, string Tag)
+    {
+        List<Transform> Res = new List<Transform>();
+        Debug.Log(Obj.tag);
+        if (Obj.tag == Tag) Res.Add(Obj.transform);
+        for (int ChildInd = 0; ChildInd < Obj.childCount; ChildInd++) Res.AddRange(GetChildsWithTag(Obj.GetChild(ChildInd), Tag));
+        return Res;
+    }
+
+    public static List<Transform> GetAllWithTag(string Tag)
+    {
+        List <Transform> Res = new List <Transform>();
+        foreach (GameObject Obj in Resources.FindObjectsOfTypeAll(typeof(GameObject))) Res.AddRange(GetChildsWithTag(Obj.transform, Tag));
+        return Res;
     }
 
     public static Vector3 GetVelocity(Transform Obj) => CheckComponent<VelocityCalculator>(Obj).Velocity;

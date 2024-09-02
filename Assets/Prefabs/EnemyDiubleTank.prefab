@@ -132,6 +132,7 @@ MonoBehaviour:
   ShootSound: {fileID: 8300000, guid: f81a0954889a1284787a8b17a7237e93, type: 3}
   ShellPref: {fileID: 1760429176950168822, guid: dfd4883b4e8f06841badeb60048e1e4b, type: 3}
   CannonTransform: {fileID: 4710389465275362565}
+  ReloadingTime: 2
   RotationSpeed: 45
   CannonStrength: 400
   Cannons:
@@ -298,7 +299,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 3.513329
-  m_BaseOffset: 0
+  m_BaseOffset: -0.6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &2044373077602488057

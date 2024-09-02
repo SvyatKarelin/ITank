@@ -24,7 +24,7 @@ public class ArtilleryCannon : Cannon
         float Distance = Vector3.Distance(CannonTransform.position, new Vector3(Target.x, CannonTransform.position.y , Target.z));
         float HeightDelta = Target.y - CannonTransform.position.y;
         Vel = Mathf.Sqrt((-Physics.gravity.y*Mathf.Pow(Distance, 2)) / (Mathf.Cos(Angles.x*Mathf.Deg2Rad)*Mathf.Cos(Angles.x * Mathf.Deg2Rad)*Distance - Mathf.Pow(Mathf.Cos(Angles.x * Mathf.Deg2Rad), 2)*HeightDelta))/ Mathf.Sqrt(2);
-        print(Vel);
+        //print(Vel);
     }
 
     private new void Update()
@@ -46,7 +46,7 @@ public class ArtilleryCannon : Cannon
             Quaternion CannonRotation = new Quaternion();
             CannonRotation.eulerAngles = new Vector3(-Ang.x, Ang.y, 0f);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, CannonRotation, RotationSpeed * Time.deltaTime);
-            print(Vel);
+            //print(Vel);
 
             if (Utilits.CompareWithError(transform.rotation.eulerAngles, CannonRotation.eulerAngles, 2f)) IsAimed = true;
             else IsAimed = false;

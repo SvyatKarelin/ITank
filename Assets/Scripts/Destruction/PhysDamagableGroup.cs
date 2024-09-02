@@ -11,11 +11,13 @@ public class PhysDamagableGroup : PhysDestruction
 
     public void TakeDamageCallback(int Damage)
     {
-        print(gameObject.name);
+        //print(gameObject.name);
         HealthPoints -= Damage;
         if (HealthPoints <= 0)
         {
-            PhysDestroy(transform, transform.parent);
+            if (transform.parent is not null) PhysDestroy(transform, transform.parent);
+            else PhysDestroy(transform);
+
             TakeDamageCallbacks = null;
             foreach (var Member in GroubMembers) Member.TakeDamageCallbacks -= TakeDamageCallback;
         }

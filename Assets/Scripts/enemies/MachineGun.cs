@@ -14,7 +14,7 @@ public class MachineGun : Cannon
             ShootShell(ShellPref);
         }
         IsShooting = false;
-        StartCoroutine(Reload(2f));
+        StartCoroutine(Reload(ReloadingTime));
     }
 
     public override void Shoot()

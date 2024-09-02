@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Skirmish.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Duel.unity
+    guid: a09abc5942bb17d4e8811d910554ee70
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 8537fe06b56d2404799e327667073b3b
+  - enabled: 1
+    path: Assets/Scenes/Endless.unity
+    guid: 45c50afdc128d064a9ee51f654ee968b
   m_configObjects: {}

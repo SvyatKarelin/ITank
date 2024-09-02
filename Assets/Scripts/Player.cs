@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : DestructableVehicle
 {
     [SerializeField] private Cannon TankCannon;
-    [SerializeField] private Transform CameraTransform;
+    public Transform CameraTransform;
     [SerializeField] private Transform CameraAnchor;
     [SerializeField] private float MouseSensetivity = 5;
     [SerializeField] private float CameraRange = 10;
@@ -19,6 +20,7 @@ public class Player : DestructableVehicle
     private AudioSource audioSourse;
     private Rigidbody Rigitbody;
     private Vector2 Rot;
+
     public override void Start()
     {
         HealthPoints = StartHealth;
@@ -69,5 +71,13 @@ public class Player : DestructableVehicle
 
         TankCannon.LookAt(GetShootPos());
         if (Input.GetMouseButtonDown(0)) TankCannon.Shoot();
+    }
+
+    public override void Destroy()
+    {
+        FindObjectOfType<EventHandler>()?.Invoke("OnPlayerDied");
+        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        Cursor.lockState = CursorLockMode.Confined;
+        VehicleDestroy(transform);
     }
 }

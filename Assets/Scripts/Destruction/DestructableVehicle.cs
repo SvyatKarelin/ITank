@@ -9,7 +9,7 @@ public class DestructableVehicle : PhysDestruction
     void PartDestroy(Transform VehiclePart)
     {
         if (VehiclePart.GetComponent<Renderer>()) VehiclePart.GetComponent<Renderer>().material.color = new Color(0.215f, 0.215f, 0.215f, 1f);
-        foreach (Behaviour C in VehiclePart.GetComponents<Behaviour>()) C.enabled = false;
+        foreach (Behaviour C in VehiclePart.GetComponents<Behaviour>()) Destroy(C);
         PhysDestroy(VehiclePart);
         Destroy(VehiclePart.gameObject, 20);
     }

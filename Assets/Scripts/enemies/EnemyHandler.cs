@@ -10,6 +10,7 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField, Min(0)] private float NoSpawnRadius = 100;
     [SerializeField, Min(0)] private float SpawnRadius = 300;
     [SerializeField, Min(0)] private float EnemySpawnCountown = 300;
+    [SerializeField] private bool RespawnEnemies = true;
     [SerializeField] private List<GameObject> Enemies;
     private float elapsedTime = 0.0f;
 
@@ -28,11 +29,16 @@ public class EnemyHandler : MonoBehaviour
         Instantiate(Enemies[Random.Range(0, Enemies.Count - 1)], EnemyPos, Quaternion.identity);
     }
 
+    private void Start()
+    {
+        for(int i = 0; i < EnemyMaxCount; i++) SpawnEnemy();
+    }
+
     void Update()
     {
         elapsedTime += Time.deltaTime;
 
-        if (elapsedTime > EnemySpawnCountown && FindObjectsOfType<Enemy>().Where(Enemy => Enemy.enabled).ToArray().Length < EnemyMaxCount)
+        if (RespawnEnemies && elapsedTime > EnemySpawnCountown && FindObjectsOfType<Enemy>().Where(Enemy => Enemy.enabled).ToArray().Length < EnemyMaxCount)
         {
             SpawnEnemy();
             elapsedTime = 0;

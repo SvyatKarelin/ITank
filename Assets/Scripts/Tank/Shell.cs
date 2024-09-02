@@ -21,7 +21,7 @@ public class Shell : MonoBehaviour
 
     private void Update()
     {
-        transform.rotation = Quaternion.LookRotation(_rigitBody.velocity);
+        //transform.rotation = Quaternion.LookRotation(_rigitBody.velocity);
     }
 
     void OnCollisionEnter(Collision collision)
