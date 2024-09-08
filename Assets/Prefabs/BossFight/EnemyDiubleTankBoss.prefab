@@ -310,6 +310,7 @@ MonoBehaviour:
   ShootSound: {fileID: 8300000, guid: f81a0954889a1284787a8b17a7237e93, type: 3}
   ShellPref: {fileID: 1760429176950168822, guid: dfd4883b4e8f06841badeb60048e1e4b, type: 3}
   CannonTransform: {fileID: 8688321351574762420}
+  ReloadingTime: 0.5
   RotationSpeed: 45
   CannonStrength: 400
   Cannons:

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class DestructionObjects : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected int StartHealth;
+    [SerializeField] public int StartHealth;
     protected int _HealthPoints;
     public int HealthPoints { get { return _HealthPoints; } protected set { _HealthPoints = Mathf.Clamp( value , 0 , int.MaxValue ); } }
     public virtual void Start()
