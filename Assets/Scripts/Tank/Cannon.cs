@@ -91,7 +91,8 @@ public class Cannon : MonoBehaviour
     {
         if (CannonTarget is not null) {
             Vector3 CannonAim = Aim(CannonTransform, CannonTarget.GetPos()), TurretAim = Aim(transform, CannonTarget.GetPos());
-            transform.eulerAngles = new Vector3(0f, TurretAim.y , 0f);
+            print(transform.rotation.eulerAngles.y);
+            transform.localRotation = Quaternion.Euler( 0f, CannonAim.y - transform.parent.eulerAngles.y, 0f);
             CannonTransform.eulerAngles = new Vector3(CannonAim.x, CannonAim.y, 0f);
 
             if (Utilits.CompareWithError(CannonTransform.eulerAngles, Quaternion.LookRotation(CannonTarget.GetPos() - CannonTransform.position).eulerAngles, 2f)) IsAimed = true; 
