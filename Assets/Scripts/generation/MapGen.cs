@@ -8,13 +8,21 @@ using UnityEngine;
 
 public class MapGen : MonoBehaviour
 {
-    [SerializeField] private int GridSize;
+    public List<Vector2> UsedCells = new();
+
+    [SerializeField] private Vector2 MaxBaseSize;
+    [SerializeField] private Vector2 MinBaseSize;
+    [SerializeField] private Vector2 GenerationMapSize;
+    [SerializeField] private float GenerationMapGridSize;
+    [SerializeField] private float BasesCount;
+
+    [SerializeField] private float GridSize;
     [SerializeField] private float GlobalGridSize;
     [SerializeField] private Vector2 MapSize;
     [SerializeField] private List<GameObject> CellPrefabs;
     [SerializeField] private Transform StartPoss;
     private int[,] Map;
-    [SerializeField] private Dictionary<Vector2, GameObject> CellSizes;
+    [SerializeField] private List<KeyValuePair<Vector2, GameObject>> CellSizes;
 
     Vector2 GetCellSize(Transform Cell)
     {
@@ -22,20 +30,29 @@ public class MapGen : MonoBehaviour
         return new Vector2(GlblSize.x / GridSize, GlblSize.z / GridSize);
     }
 
-    void CreateIntersect(Vector2 Coords, Vector3 StartPos)
+    void Unparent(GameObject Parent)
     {
-        if (Map[(int)Coords.x, (int)Coords.y] != 0) return;
+        if (Parent is null) return;
+        List<Transform> ChildLis = new();
+        foreach (Transform Child in Parent.transform) ChildLis.Add(Child);
+        foreach (Transform Child in ChildLis) Child.transform.parent = null;
+        Destroy(Parent);
+    }
+
+    GameObject CreateIntersect(Vector2 Coords, Vector3 StartPos)
+    {
+        if (Map[(int)Coords.x, (int)Coords.y] != 0) return null;
         //максимально возможный bounding box обьекта где Coords + min - нижняя левая точка, Coords + max - верхняя правая 
         Vector2 Min = new Vector2( GetIntersectLenght(Coords, new Vector2(-1,0)), GetIntersectLenght(Coords, new Vector2(0, -1)));
         Vector2 Max = new Vector2( GetIntersectLenght(Coords, new Vector2(1,0)), GetIntersectLenght(Coords, new Vector2(0, 1)));
         //максимально возможный размер блока(с учетом блока из которого происходят intersect ы)
         Vector2 FreeSpace = Min + Max + new Vector2(1,1);
-        Dictionary<Vector2, GameObject> AvailableSizes = new();
+        List<KeyValuePair<Vector2, GameObject>> AvailableSizes = new();
 
         foreach (var Size in CellSizes)
-            if ((Size.Key.x <= FreeSpace.x && Size.Key.y <= FreeSpace.y) || (Size.Key.x <= FreeSpace.y && Size.Key.y <= FreeSpace.x)) AvailableSizes.Add(Size.Key, Size.Value);
+            if ((Size.Key.x <= FreeSpace.x && Size.Key.y <= FreeSpace.y) || (Size.Key.x <= FreeSpace.y && Size.Key.y <= FreeSpace.x)) AvailableSizes.Add(new KeyValuePair<Vector2, GameObject>(Size.Key, Size.Value));
         //print(AvailableSizes.ElementAt(0));
-        if (AvailableSizes.Count <= 0) return;
+        if (AvailableSizes.Count <= 0) return null;
 
         var Rand = AvailableSizes.ElementAt(UnityEngine.Random.Range(0, AvailableSizes.Count));
         //если обьект не влезает в стандартном положении - перевернуть
@@ -58,11 +75,10 @@ public class MapGen : MonoBehaviour
                 Map[x, y] = SUS;
 
         //находим центр обьекта как сумму локальных координат центра (размер пополам) и минимальной точки
-        Vector3 Pos = StartPos + new Vector3((CurMin + Coords).x + (RandSize.x) / 2, 0 , (CurMin + Coords).y + (RandSize.y) / 2)* GlobalGridSize;
+        Vector3 Pos = StartPos + new Vector3((CurMin + Coords).x + (RandSize.x + 1) / 2, 0 , (CurMin + Coords).y + (RandSize.y + 1) / 2)* GlobalGridSize;
         Quaternion Rot = new();
         Rot.eulerAngles = Rotate ? new Vector3(0, 90, 0) : Vector2.zero;
-        GameObject Cell = Instantiate(Rand.Value, Pos, Rot);
-
+        return Instantiate(Rand.Value, Pos, Rot);
     }
 
     public bool IsBetween(double testValue, double bound1, double bound2)
@@ -88,36 +104,44 @@ public class MapGen : MonoBehaviour
 
     void Start()
     {
-        //--> y
-        //|
-        //\/ x
-        Map = new int[(int)MapSize.x, (int)MapSize.y];
-        CellSizes = new();
-
-        foreach (GameObject Cell in CellPrefabs)
+        for (int Base = 1; Base <= BasesCount; Base++)
         {
-            CellSizes.Add(GetCellSize(Cell.transform), Cell);
-            print(GetCellSize(Cell.transform));
-            //print(GetIntersectLenght(new Vector2(0,0), new Vector2(1,0)));
-            //Map[2, 2] = 4;
-        }
-        //CreateIntersect(new Vector2(1, 1), StartPoss.position);
-        for (int x = 0; x < (int)MapSize.x; x++)
-            for (int y = 0; y < (int)MapSize.y; y++) 
-                CreateIntersect(new Vector2(x, y), StartPoss.position);
+            Vector2 BaseGridPos;
+            do {
+                BaseGridPos = new Vector2((int)UnityEngine.Random.Range(0, GenerationMapSize.x - 1), (int)UnityEngine.Random.Range(0, GenerationMapSize.y - 1));
+            } while (UsedCells.Contains(BaseGridPos));
+            UsedCells.Add(BaseGridPos);
 
-        for (int y = 0; y < (int)MapSize.y; y++)
-        {
-            string PrStr = "";
+            Vector3 BasePos = Utilits.GetGround(new Vector3(BaseGridPos.x,0f ,BaseGridPos.y) * Mathf.Max(MaxBaseSize.x, MaxBaseSize.y) * GenerationMapGridSize + transform.position);
+            //--> y
+            //|
+            //\/ x
+            MapSize = new((int)UnityEngine.Random.Range(MinBaseSize.x, MaxBaseSize.x), (int)UnityEngine.Random.Range(MinBaseSize.y, MaxBaseSize.y));
+            Map = new int[(int)MapSize.x, (int)MapSize.y];
+            CellSizes = new();
+
+            foreach (GameObject Cell in CellPrefabs) CellSizes.Add(new KeyValuePair<Vector2, GameObject>(GetCellSize(Cell.transform), Cell));
+
             for (int x = 0; x < (int)MapSize.x; x++)
-                PrStr += Map[x,y];
-            print(PrStr);
-        }
+                for (int y = 0; y < (int)MapSize.y; y++)
+                {
+                    GameObject Cell = CreateIntersect(new Vector2(x, y), BasePos);
+                    Unparent(Cell);
+                }
 
-        //GameObject Cell = Instantiate(CellPrefabs[0], transform.position, Quaternion.identity);
-        //print(GetCellSize(Cell.transform));
-        //for (int i = 0; i < ; i++) 
-        //print(Intersect(new Vector2(0,0), new Vector2(0, 1)));
+            /*for (int y = 0; y < (int)MapSize.y; y++)
+            {
+                string PrStr = "";
+                for (int x = 0; x < (int)MapSize.x; x++)
+                    PrStr += Map[x,y];
+                print(PrStr);
+            }*/
+
+            //GameObject Cell = Instantiate(CellPrefabs[0], transform.position, Quaternion.identity);
+            //print(GetCellSize(Cell.transform));
+            //for (int i = 0; i < ; i++) 
+            //print(Intersect(new Vector2(0,0), new Vector2(0, 1)));
+        }
     }
 
     // Update is called once per frame

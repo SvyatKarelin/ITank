@@ -14,19 +14,14 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField] private List<GameObject> Enemies;
     private float elapsedTime = 0.0f;
 
-    Vector3 GetGround(Vector3 Pos) {
-        if (Physics.Raycast(Pos, Vector3.down, out RaycastHit hit)) return hit.point;
-        else return Pos;
-    }
-
     void SpawnEnemy()
     {
-        float RndAng = Random.Range(0, 2 * Mathf.PI);
-        Vector3 EmnemyLocalPos = new Vector3(Mathf.Cos(RndAng), 0f, Mathf.Sin(RndAng)) * Random.Range(NoSpawnRadius, SpawnRadius);
-        Vector3 EnemyPos = GameObject.FindGameObjectWithTag("Player").transform.position + EmnemyLocalPos;
-        EnemyPos = GetGround(EnemyPos + new Vector3(0, GameObject.FindGameObjectWithTag("Player").transform.position.y + 100, 0));
+        Vector2 RndCir = Utilits.GetRandomOnCircle();
+        Vector3 EmnemyLocalPos = new Vector3(RndCir.x, 0f, RndCir.y) * Random.Range(NoSpawnRadius, SpawnRadius);
+        Vector3 EnemyPos = Utilits.GetGround(GameObject.FindGameObjectWithTag("Player").transform.position + EmnemyLocalPos);
+        //EnemyPos = GetGround(EnemyPos + new Vector3(0, GameObject.FindGameObjectWithTag("Player").transform.position.y + 100, 0));
 
-        Instantiate(Enemies[Random.Range(0, Enemies.Count - 1)], EnemyPos, Quaternion.identity);
+        Instantiate(Enemies[Random.Range(0, Enemies.Count)], EnemyPos, Quaternion.identity);
     }
 
     private void Start()

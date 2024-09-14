@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89aeaf4b0d27abe449a0b1e8b8a540e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 400
+  StartHealth: 200
   ExplosionStenght: 100
   ExplosionRadius: 100
   cannon: {fileID: 4843036344382940488}

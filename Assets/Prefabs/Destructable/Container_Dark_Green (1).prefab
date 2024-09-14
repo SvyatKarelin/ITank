@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8778279099853850964}
   - component: {fileID: 4338099274637143714}
   - component: {fileID: 3867487914571899084}
-  - component: {fileID: 7329291535549851835}
   m_Layer: 0
   m_Name: Container_Door1_Dark_Green
   m_TagString: Untagged
@@ -128,22 +127,6 @@ MonoBehaviour:
   - {fileID: 815625724776222990}
   - {fileID: 793326731160282296}
   - {fileID: 7535333992664949271}
---- !u!208 &7329291535549851835
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356951775530579261}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.19800001, y: 1.7820001, z: 0.93000007}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 3.8260002, y: 1.7820001, z: 0.947}
-  m_TimeToStationary: 0.5
 --- !u!1 &1560587368844855077
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +271,6 @@ GameObject:
   - component: {fileID: 6776573983599087413}
   - component: {fileID: 6602712509441843126}
   - component: {fileID: 7535333992664949271}
-  - component: {fileID: 9200399800427311155}
   m_Layer: 0
   m_Name: Container_Door4_Dark_Green
   m_TagString: Untagged
@@ -403,22 +385,6 @@ MonoBehaviour:
   - {fileID: 815625724776222990}
   - {fileID: 793326731160282296}
   - {fileID: 7535333992664949271}
---- !u!208 &9200399800427311155
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5911105806613761332}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.19800001, y: 1.7820001, z: 0.93000007}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -3.8260002, y: 1.7820001, z: -0.91200006}
-  m_TimeToStationary: 0.5
 --- !u!1 &6564261514519766557
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +398,6 @@ GameObject:
   - component: {fileID: 8429895869268685415}
   - component: {fileID: 1133482996266868016}
   - component: {fileID: 793326731160282296}
-  - component: {fileID: 3009986214844498326}
   m_Layer: 0
   m_Name: Container_Door3_Dark_Green
   m_TagString: Untagged
@@ -547,22 +512,6 @@ MonoBehaviour:
   - {fileID: 815625724776222990}
   - {fileID: 793326731160282296}
   - {fileID: 7535333992664949271}
---- !u!208 &3009986214844498326
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6564261514519766557}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.19800001, y: 1.7820001, z: 0.93000007}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -3.8260002, y: 1.7820001, z: 0.947}
-  m_TimeToStationary: 0.5
 --- !u!1 &7664843696930036220
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +525,6 @@ GameObject:
   - component: {fileID: 4887418662123944664}
   - component: {fileID: 7707089149304906797}
   - component: {fileID: 815625724776222990}
-  - component: {fileID: 4064395324057538158}
   m_Layer: 0
   m_Name: Container_Door2_Dark_Green
   m_TagString: Untagged
@@ -691,19 +639,3 @@ MonoBehaviour:
   - {fileID: 815625724776222990}
   - {fileID: 793326731160282296}
   - {fileID: 7535333992664949271}
---- !u!208 &4064395324057538158
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7664843696930036220}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.19800001, y: 1.7820001, z: 0.93000007}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 3.8260002, y: 1.7820001, z: -0.91200006}
-  m_TimeToStationary: 0.5

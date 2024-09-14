@@ -76,5 +76,17 @@ public static class Utilits
         return Res;
     }
 
+    public static Vector2 GetRandomOnCircle()
+    {
+        float RndAng = Random.Range(0, 2 * Mathf.PI);
+        return new Vector2(Mathf.Cos(RndAng), Mathf.Sin(RndAng));
+    }
+
+    public static Vector3 GetGround(Vector3 Pos)
+    {
+        if (Physics.Raycast(Pos, Vector3.down, out RaycastHit hit)) return hit.point;
+        else return Pos;
+    }
+
     public static Vector3 GetVelocity(Transform Obj) => CheckComponent<VelocityCalculator>(Obj).Velocity;
 }
