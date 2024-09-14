@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 939077088029878202}
   - component: {fileID: 6755287696330502123}
   - component: {fileID: 2896610568795858492}
+  - component: {fileID: 1445226994556160412}
   m_Layer: 0
   m_Name: Container_Dark_Green (1)
   m_TagString: Shelter
@@ -258,6 +259,22 @@ MonoBehaviour:
   - {fileID: 815625724776222990}
   - {fileID: 793326731160282296}
   - {fileID: 7535333992664949271}
+--- !u!208 &1445226994556160412
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560587368844855077}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3.6870003, y: 1.7820001, z: 1.8000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.7820001, z: 0.018000001}
+  m_TimeToStationary: 0.5
 --- !u!1 &5911105806613761332
 GameObject:
   m_ObjectHideFlags: 0

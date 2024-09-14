@@ -78,6 +78,7 @@ public class Player : DestructableVehicle
         FindObjectOfType<EventHandler>()?.Invoke("OnPlayerDied");
         Destroy(GameObject.FindGameObjectWithTag("Player"));
         Cursor.lockState = CursorLockMode.Confined;
+        this.enabled = false;
         VehicleDestroy(transform);
     }
 }

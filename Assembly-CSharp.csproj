@@ -65,15 +65,16 @@
     <Compile Include="Assets\Scripts\Destruction\PhysDamagableGroup.cs" />
     <Compile Include="Assets\Scripts\AutoEffect.cs" />
     <Compile Include="Assets\Scripts\Tank\Shell.cs" />
+    <Compile Include="Assets\Scripts\UI\LifeCounter.cs" />
     <Compile Include="Assets\Scripts\abstract\DestructionObjects.cs" />
     <Compile Include="Assets\Scripts\enemies\ArtilleryCannon.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\EventHandler.cs" />
-    <Compile Include="Assets\Scripts\HealthBar.cs" />
     <Compile Include="Assets\Scripts\generation\MapGen.cs" />
     <Compile Include="Assets\Scripts\Destruction\PhysDestruction.cs" />
     <Compile Include="Assets\Scripts\Tank\Cannon.cs" />
+    <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
     <Compile Include="Assets\Scripts\enemies\Enemy.cs" />
     <Compile Include="Assets\Scripts\enemies\Artillery.cs" />
     <Compile Include="Assets\Scripts\Destruction\Explosives.cs" />

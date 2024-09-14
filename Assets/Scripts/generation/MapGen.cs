@@ -12,9 +12,6 @@ public class MapGen : MonoBehaviour
 
     [SerializeField] private Vector2 MaxBaseSize;
     [SerializeField] private Vector2 MinBaseSize;
-    [SerializeField] private Vector2 GenerationMapSize;
-    [SerializeField] private float GenerationMapGridSize;
-    [SerializeField] private float BasesCount;
 
     [SerializeField] private float GridSize;
     [SerializeField] private float GlobalGridSize;
@@ -104,44 +101,36 @@ public class MapGen : MonoBehaviour
 
     void Start()
     {
-        for (int Base = 1; Base <= BasesCount; Base++)
-        {
-            Vector2 BaseGridPos;
-            do {
-                BaseGridPos = new Vector2((int)UnityEngine.Random.Range(0, GenerationMapSize.x - 1), (int)UnityEngine.Random.Range(0, GenerationMapSize.y - 1));
-            } while (UsedCells.Contains(BaseGridPos));
-            UsedCells.Add(BaseGridPos);
+        Vector3 BasePos = Utilits.GetGround(transform.position);
+        //--> y
+        //|
+        //\/ x
+        MapSize = new((int)UnityEngine.Random.Range(MinBaseSize.x, MaxBaseSize.x), (int)UnityEngine.Random.Range(MinBaseSize.y, MaxBaseSize.y));
+        Map = new int[(int)MapSize.x, (int)MapSize.y];
+        CellSizes = new();
 
-            Vector3 BasePos = Utilits.GetGround(new Vector3(BaseGridPos.x,0f ,BaseGridPos.y) * Mathf.Max(MaxBaseSize.x, MaxBaseSize.y) * GenerationMapGridSize + transform.position);
-            //--> y
-            //|
-            //\/ x
-            MapSize = new((int)UnityEngine.Random.Range(MinBaseSize.x, MaxBaseSize.x), (int)UnityEngine.Random.Range(MinBaseSize.y, MaxBaseSize.y));
-            Map = new int[(int)MapSize.x, (int)MapSize.y];
-            CellSizes = new();
+        foreach (GameObject Cell in CellPrefabs) CellSizes.Add(new KeyValuePair<Vector2, GameObject>(GetCellSize(Cell.transform), Cell));
 
-            foreach (GameObject Cell in CellPrefabs) CellSizes.Add(new KeyValuePair<Vector2, GameObject>(GetCellSize(Cell.transform), Cell));
-
-            for (int x = 0; x < (int)MapSize.x; x++)
-                for (int y = 0; y < (int)MapSize.y; y++)
-                {
-                    GameObject Cell = CreateIntersect(new Vector2(x, y), BasePos);
-                    Unparent(Cell);
-                }
-
-            /*for (int y = 0; y < (int)MapSize.y; y++)
+        for (int x = 0; x < (int)MapSize.x; x++)
+            for (int y = 0; y < (int)MapSize.y; y++)
             {
-                string PrStr = "";
-                for (int x = 0; x < (int)MapSize.x; x++)
-                    PrStr += Map[x,y];
-                print(PrStr);
-            }*/
+                GameObject Cell = CreateIntersect(new Vector2(x, y), BasePos);
+                Unparent(Cell);
+            }
 
-            //GameObject Cell = Instantiate(CellPrefabs[0], transform.position, Quaternion.identity);
-            //print(GetCellSize(Cell.transform));
-            //for (int i = 0; i < ; i++) 
-            //print(Intersect(new Vector2(0,0), new Vector2(0, 1)));
-        }
+        /*for (int y = 0; y < (int)MapSize.y; y++)
+        {
+            string PrStr = "";
+            for (int x = 0; x < (int)MapSize.x; x++)
+                PrStr += Map[x,y];
+            print(PrStr);
+        }*/
+
+        //GameObject Cell = Instantiate(CellPrefabs[0], transform.position, Quaternion.identity);
+        //print(GetCellSize(Cell.transform));
+        //for (int i = 0; i < ; i++) 
+        //print(Intersect(new Vector2(0,0), new Vector2(0, 1)));
+        
     }
 
     // Update is called once per frame
